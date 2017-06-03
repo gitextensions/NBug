@@ -1,8 +1,10 @@
-# 1.2.3
+# TBD
 
-*TBD*
-
+* Ability to send bug reports immediately.
+* Improve ability to attach extra files to bug report.
+* Now builds on Mono.
 * Handle invalid/corrupt report files gracefully.
+* Exception report sent to the developer is always in English rather than user's language.
 
 # 1.2.2
 

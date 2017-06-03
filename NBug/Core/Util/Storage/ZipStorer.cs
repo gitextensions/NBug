@@ -324,15 +324,16 @@ namespace NBug.Core.Util.Storage
 		/// <param name="_comment">
 		/// Comment for stored file
 		/// </param>
-		public void AddFile(Compression _method, string _pathname, string _filenameInZip, string _comment)
+		/// <param name="_share"></param>
+		public void AddFile(Compression _method, string _pathname, string _filenameInZip, string _comment, FileShare _share = FileShare.Read)
 		{
 			if (this.Access == FileAccess.Read)
 			{
 				throw new InvalidOperationException("Writing is not alowed");
 			}
 
-			var stream = new FileStream(_pathname, FileMode.Open, FileAccess.Read);
-			this.AddStream(_method, _filenameInZip, stream, File.GetLastWriteTime(_pathname), _comment);
+            var stream = new FileStream(_pathname, FileMode.Open, FileAccess.Read, _share);
+            this.AddStream(_method, _filenameInZip, stream, File.GetLastWriteTime(_pathname), _comment);
 			stream.Close();
 		}
 
@@ -619,13 +620,13 @@ namespace NBug.Core.Util.Storage
 
 		/* DOS Date and time:
             MS-DOS date. The date is a packed value with the following format. Bits Description
-                0-4 Day of the month (1–31)
+                0-4 Day of the month (1ï¿½31)
                 5-8 Month (1 = January, 2 = February, and so on)
                 9-15 Year offset from 1980 (add 1980 to get actual year)
             MS-DOS time. The time is a packed value with the following format. Bits Description
                 0-4 Second divided by 2
-                5-10 Minute (0–59)
-                11-15 Hour (0–23 on a 24-hour clock)
+                5-10 Minute (0ï¿½59)
+                11-15 Hour (0ï¿½23 on a 24-hour clock)
         */
 
 		#region Methods

@@ -105,6 +105,7 @@
     <Compile Include="Core\UI\WinForms\Panels\ExceptionDetails.Designer.cs">
       <DependentUpon>ExceptionDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\Util\Storage\FileMask.cs" />
     <Compile Include="Core\Util\Web\StreamUpload.cs" />
     <Compile Include="Core\Util\ConnectionStringParser.cs" />
     <Compile Include="Core\Util\PublicResources.cs" />
@@ -146,6 +147,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Localization.ko-KR.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Localization.nl.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.nl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Localization.pl-PL.Designer.cs">
+      <DependentUpon>Localization.pl-PL.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\Localization.pt-BR.Designer.cs">
       <DependentUpon>Localization.pt-BR.resx</DependentUpon>
@@ -288,6 +299,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.ja.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localization.nl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.nl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Localization.pl-PL.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.pl-PL.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Localization.pt-BR.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.pt-BR.Designer.cs</LastGenOutput>
@@ -321,16 +340,15 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent Condition="$(OS) == 'WINDOWS_NT'">if $(ConfigurationName)==Release (
-xcopy "$(TargetPath)" "$(SolutionDir)packages\NBug\lib\net40-client\" /Y
-xcopy "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)packages\NBug\lib\net40-client\" /Y
-xcopy "$(TargetDir)$(TargetName).xml" "$(SolutionDir)packages\NBug\lib\net40-client\" /Y
-xcopy "$(TargetPath)" "$(SolutionDir)packages\NBug\tools\" /Y
-xcopy "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)packages\NBug\tools\" /Y
-)</PostBuildEvent>
+    <PostBuildEvent Condition="$(OS) == 'WINDOWS_NT'">
+if $(ConfigurationName)==Release xcopy /y "$(TargetPath)" "$(SolutionDir)packages\NBug\lib\net40-client\"
+if $(ConfigurationName)==Release xcopy /y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)packages\NBug\lib\net40-client\"
+if $(ConfigurationName)==Release xcopy /y "$(TargetDir)$(TargetName).xml" "$(SolutionDir)packages\NBug\lib\net40-client\"
+if $(ConfigurationName)==Release xcopy /y "$(TargetPath)" "$(SolutionDir)packages\NBug\tools\"
+if $(ConfigurationName)==Release xcopy /y "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)packages\NBug\tools\"</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

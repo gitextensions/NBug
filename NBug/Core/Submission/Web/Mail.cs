@@ -45,8 +45,8 @@ namespace NBug.Core.Submission.Web
 
 		// Connection string format (single line)
 		// Warning: There should be no semicolon (;) or equals sign (=) used in any field except for password.
-		// Warning: Password filed should be the last item.
-		// Warning: No fild value value should contain the phrase 'password='
+		// Warning: The Password field should be the last item.
+		// Warning: No field value should contain the phrase 'password='
 		// Note: Normal ports may be 25/26 depending on the host!
 		// Note: Priority can be High, Normal, Low (Normal by default).
 
@@ -61,10 +61,10 @@ namespace NBug.Core.Submission.Web
 		 * CustomSubject=;
 		 * CustomBody=;
 		 * SmtpServer=smtp.gmail.com;
-		 * UseSSL=yes;
+		 * UseSSL=true;
 		 * Port=465;
 		 * Priority=;
-		 * UseAuthentication=yes;
+		 * UseAuthentication=true;
 		 * Username=my_tracker@gmail.com;
 		 * Password=mypassword;
 		 */
@@ -122,7 +122,7 @@ namespace NBug.Core.Submission.Web
 				this.UseAttachment = false;
 			}
 
-			// Make sure that we can use authentication even with emtpy username and password
+			// Make sure that we can use authentication even with emtpy password
 			if (!string.IsNullOrEmpty(this.Username))
 			{
 				this.UseAuthentication = true;

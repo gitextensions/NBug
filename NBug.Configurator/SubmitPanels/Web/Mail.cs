@@ -68,25 +68,16 @@ namespace NBug.Configurator.SubmitPanels.Web
 
 					mail.Bcc = mail.Bcc.TrimEnd(new[] { ',' });
 				}
-
-				if (!this.defaultPortCheckBox.Checked)
-				{
-					mail.Port = (int)this.portNumericUpDown.Value;
-				}
-
+				
 				if (this.useAuthenticationCheckBox.Checked)
 				{
-					// Make sure that we can use authentication even with emtpy username and password
-					if (string.IsNullOrEmpty(this.usernameTextBox.Text))
-					{
-						mail.UseAuthentication = true;
-					}
-
-					mail.Username = this.usernameTextBox.Text;
+                    mail.UseAuthentication = true;
+                    mail.Username = this.usernameTextBox.Text;
 					mail.Password = this.passwordTextBox.Text;
 				}
 
 				mail.UseSsl = this.useSslCheckBox.Checked;
+				mail.Port = (int)this.portNumericUpDown.Value;
 				mail.UseAttachment = this.useAttachmentCheckBox.Checked;
 
 				return mail.ConnectionString;
@@ -110,7 +101,7 @@ namespace NBug.Configurator.SubmitPanels.Web
 				this.useAttachmentCheckBox.Checked = mail.UseAttachment;
 				this.portNumericUpDown.Value = mail.Port;
 
-				if (this.portNumericUpDown.Value == 25 || this.portNumericUpDown.Value == 465 || mail.Port > 0)
+				if (this.portNumericUpDown.Value == 25 || this.portNumericUpDown.Value == 465 || mail.Port == 0)
 				{
 					this.defaultPortCheckBox.Checked = true;
 				}

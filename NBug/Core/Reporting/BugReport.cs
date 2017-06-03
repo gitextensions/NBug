@@ -49,6 +49,13 @@ namespace NBug.Core.Reporting
 					this.CreateReportZip(serializableException, report);
 				}
 
+                // If NBug is configured not to delay error reporting and user did not select to exit the app immediately,
+                // start dispatching the bug report right away
+                if (!Settings.DeferredReporting && uiDialogResult.Execution == ExecutionFlow.ContinueExecution)
+                {
+                    new NBug.Core.Submission.Dispatcher();
+                }
+
 				return uiDialogResult.Execution;
 			}
 			catch (Exception ex)
@@ -61,68 +68,13 @@ namespace NBug.Core.Reporting
 		// ToDo: PRIORITY TASK! This code needs more testing & condensation
 		private void AddAdditionalFiles(ZipStorer zipStorer)
 		{
-			foreach (var mask in Settings.AdditionalReportFiles)
+			foreach (FileMask additionalFiles in Settings.AdditionalReportFiles)
 			{
-				// Join before spliting because the mask may have some folders inside it
-				var fullPath = Path.Combine(Settings.NBugDirectory, mask);
-				var dir = Path.GetDirectoryName(fullPath);
-				var file = Path.GetFileName(fullPath);
-
-				if (!Directory.Exists(dir))
-				{
-					continue;
-				}
-
-				if (file.Contains("*") || file.Contains("?"))
-				{
-					foreach (var item in Directory.GetFiles(dir, file))
-					{
-						this.AddToZip(zipStorer, Settings.NBugDirectory, item);
-					}
-				}
-				else
-				{
-					this.AddToZip(zipStorer, Settings.NBugDirectory, fullPath);
-				}
+                additionalFiles.AddToZip(zipStorer);				
 			}
 		}
 
-		// ToDo: PRIORITY TASK! This code needs more testing & condensation
-		private void AddToZip(ZipStorer zipStorer, string basePath, string path)
-		{
-			path = Path.GetFullPath(path);
-
-			// If this is not inside basePath, lets change the basePath so at least some directories are kept
-			if (!path.StartsWith(basePath))
-			{
-				basePath = Path.GetDirectoryName(path);
-			}
-
-			if (Directory.Exists(path))
-			{
-				foreach (var file in Directory.GetFiles(path))
-				{
-					this.AddToZip(zipStorer, basePath, file);
-				}
-
-				foreach (var dir in Directory.GetDirectories(path))
-				{
-					this.AddToZip(zipStorer, basePath, dir);
-				}
-			}
-			else if (File.Exists(path))
-			{
-				var nameInZip = path.Substring(basePath.Length);
-				if (nameInZip.StartsWith("\\") || nameInZip.StartsWith("/"))
-				{
-					nameInZip = nameInZip.Substring(1);
-				}
-
-				nameInZip = Path.Combine("files", nameInZip);
-
-				zipStorer.AddFile(ZipStorer.Compression.Deflate, path, nameInZip, string.Empty);
-			}
-		}
+		
 
 		private void CreateReportZip(SerializableException serializableException, Report report)
 		{
