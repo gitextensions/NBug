@@ -11,7 +11,6 @@ namespace NBug
 	using System.Threading;
 	using System.Threading.Tasks;
 	using System.Windows.Forms;
-	using System.Windows.Threading;
 
 	using NBug.Core.Reporting;
 	using NBug.Core.UI;
@@ -33,24 +32,24 @@ namespace NBug
 
 		// Using delegates to make sure that static constructor gets called on delegate access
 
-		/// <summary>
-		/// Used for handling WPF exceptions bound to the UI thread.
-		/// Handles the <see cref="Application.DispatcherUnhandledException"/> events in <see cref="System.Windows"/> namespace.
-		/// </summary>
-		public static DispatcherUnhandledExceptionEventHandler DispatcherUnhandledException
-		{
-			get
-			{
-				if (Settings.HandleProcessCorruptedStateExceptions)
-				{
-					return CorruptDispatcherUnhandledExceptionHandler;
-				}
-				else
-				{
-					return DispatcherUnhandledExceptionHandler;
-				}
-			}
-		}
+		/////// <summary>
+		/////// Used for handling WPF exceptions bound to the UI thread.
+		/////// Handles the <see cref="Application.DispatcherUnhandledException"/> events in <see cref="System.Windows"/> namespace.
+		/////// </summary>
+		////public static DispatcherUnhandledExceptionEventHandler DispatcherUnhandledException
+		////{
+		////	get
+		////	{
+		////		if (Settings.HandleProcessCorruptedStateExceptions)
+		////		{
+		////			return CorruptDispatcherUnhandledExceptionHandler;
+		////		}
+		////		else
+		////		{
+		////			return DispatcherUnhandledExceptionHandler;
+		////		}
+		////	}
+		////}
 
 		/// <summary>
 		/// Used for handling WinForms exceptions bound to the UI thread.
@@ -109,11 +108,11 @@ namespace NBug
 			}
 		}
 
-		[HandleProcessCorruptedStateExceptions]
-		private static void CorruptDispatcherUnhandledExceptionHandler(object sender, DispatcherUnhandledExceptionEventArgs e)
-		{
-			DispatcherUnhandledExceptionHandler(sender, e);
-		}
+		////[HandleProcessCorruptedStateExceptions]
+		////private static void CorruptDispatcherUnhandledExceptionHandler(object sender, DispatcherUnhandledExceptionEventArgs e)
+		////{
+		////	DispatcherUnhandledExceptionHandler(sender, e);
+		////}
 
 		[HandleProcessCorruptedStateExceptions]
 		private static void CorruptThreadExceptionHandler(object sender, ThreadExceptionEventArgs e)
@@ -133,29 +132,29 @@ namespace NBug
 			UnobservedTaskExceptionHandler(sender, e);
 		}
 
-		/// <summary>
-		/// Used for handling WPF exceptions bound to the UI thread.
-		/// Handles the <see cref="Application.DispatcherUnhandledException"/> events in <see cref="System.Windows"/> namespace.
-		/// </summary>
-		/// <param name="sender">Exception sender object</param>
-		/// <param name="e">Real exception is in: e.Exception</param>
-		private static void DispatcherUnhandledExceptionHandler(object sender, DispatcherUnhandledExceptionEventArgs e)
-		{
-			if (Settings.HandleExceptions)
-			{
-				Logger.Trace("Starting to handle a System.Windows.Application.DispatcherUnhandledException.");
-				var executionFlow = new BugReport().Report(e.Exception, ExceptionThread.UI_WPF);
-				if (executionFlow == ExecutionFlow.BreakExecution)
-				{
-					e.Handled = true;
-					Environment.Exit(0);
-				}
-				else if (executionFlow == ExecutionFlow.ContinueExecution)
-				{
-					e.Handled = true;
-				}
-			}
-		}
+		/////// <summary>
+		/////// Used for handling WPF exceptions bound to the UI thread.
+		/////// Handles the <see cref="Application.DispatcherUnhandledException"/> events in <see cref="System.Windows"/> namespace.
+		/////// </summary>
+		/////// <param name="sender">Exception sender object</param>
+		/////// <param name="e">Real exception is in: e.Exception</param>
+		////private static void DispatcherUnhandledExceptionHandler(object sender, DispatcherUnhandledExceptionEventArgs e)
+		////{
+		////	if (Settings.HandleExceptions)
+		////	{
+		////		Logger.Trace("Starting to handle a System.Windows.Application.DispatcherUnhandledException.");
+		////		var executionFlow = new BugReport().Report(e.Exception, ExceptionThread.UI_WPF);
+		////		if (executionFlow == ExecutionFlow.BreakExecution)
+		////		{
+		////			e.Handled = true;
+		////			Environment.Exit(0);
+		////		}
+		////		else if (executionFlow == ExecutionFlow.ContinueExecution)
+		////		{
+		////			e.Handled = true;
+		////		}
+		////	}
+		////}
 
 		/// <summary>
 		/// Used for handling WinForms exceptions bound to the UI thread.
